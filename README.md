@@ -1,4 +1,7 @@
-![Push图片](./doc/img/ai-codereview-cartoon.png)
+![Push图片](doc/img/open/ai-codereview-cartoon.png)
+
+[开源版](README.md) | 
+[Pro版](doc/pro.md)
 
 ## 项目简介
 
@@ -7,11 +10,11 @@
 ## 功能
 
 - 🚀 多模型支持
-  - 兼容 DeepSeek、ZhipuAI、OpenAI、通义千问 和 Ollama，想用哪个就用哪个。
+  - 兼容 DeepSeek、ZhipuAI、OpenAI、Anthropic、通义千问 和 Ollama，想用哪个就用哪个。
 - 📢 消息即时推送
   - 审查结果一键直达 钉钉、企业微信 或 飞书，代码问题无处可藏！
 - 📅 自动化日报生成
-  - 基于 GitLab & GitHub Commit 记录，自动整理每日开发进展，谁在摸鱼、谁在卷，一目了然 😼。
+  - 基于 GitLab & GitHub & Gitea Commit 记录，自动整理每日开发进展，谁在摸鱼、谁在卷，一目了然 😼。
 - 📊 可视化 Dashboard
   - 集中展示所有 Code Review 记录，项目统计、开发者统计，数据说话，甩锅无门！
 - 🎭 Review Style 任你选
@@ -22,11 +25,11 @@
 
 **效果图:**
 
-![MR图片](./doc/img/mr.png)
+![MR图片](doc/img/open/mr.png)
 
-![Note图片](./doc/img/note.jpg)
+![Note图片](doc/img/open/note.jpg)
 
-![Dashboard图片](./doc/img/dashboard.jpg)
+![Dashboard图片](doc/img/open/dashboard.jpg)
 
 ## 原理
 
@@ -34,7 +37,7 @@
 事件，调用本系统的接口。系统随后通过第三方大模型对代码进行审查，并将审查结果直接反馈到对应的 Merge Request 或 Commit 的
 Note 中，便于团队查看和处理。
 
-![流程图](./doc/img/process.png)
+![流程图](doc/img/open/process.png)
 
 ## 部署
 
@@ -162,7 +165,7 @@ streamlit run ui.py --server.port=5002 --server.address=0.0.0.0
 
 企业微信和飞书推送配置类似，具体参见 [常见问题](doc/faq.md)
 
-## 其它
+## 常见问题
 
 **1.如何对整个代码库进行Review?**
 
@@ -174,9 +177,38 @@ python -m biz.cmd.review
 
 运行后，请按照命令行中的提示进行操作即可。
 
-**2.其它问题**
+**2.其它常见问题**
 
 参见 [常见问题](doc/faq.md)
+
+## 🏆 Code Review Pro 版
+
+功能更丰富的 AI Code Review 版本
+
+体验站: [https://demo.mzfuture.com](https://demo.mzfuture.com)
+
+项目介绍与使用说明 [Code Review Pro 版](doc/pro.md)
+
+快速启动命令
+```
+ curl -fsSL https://raw.githubusercontent.com/sunmh207/AI-Codereview-Gitlab/refs/heads/main/scripts/pro/install.sh | bash
+```
+
+**多种统计图**
+![多种统计图](doc/img/pro/dashboard.png)
+
+**成员提交分析** 
+![成员提交分析](doc/img/pro/member-analysis.png)
+
+**Deep Review** 
+![Deep Review](doc/img/pro/deepreview.png)
+
+**项目哨兵** 
+![项目哨兵](doc/img/pro/project-analysis-plan.png)
+
+## 相关项目
+
+如果你正在使用 AI Agent 开发工具 (如: Cursor、Cloude Code ...)，并希望对人机交互过程进行全面的记录与回溯分析，推荐使用 [Entire Dashboard](https://github.com/sunmh207/entire-dashboard)。该项目提供了完整的人机交互记录与可视化分析功能，可帮助你深入理解 AI Agent 的使用模式，优化交互体验，提升开发效率。
 
 ## 交流
 
@@ -185,8 +217,8 @@ python -m biz.cmd.review
 也欢迎加微信/微信群，一起交流学习。
 
 <p float="left">
-  <img src="doc/img/wechat.jpg" width="400" />
-  <img src="doc/img/wechat_group.jpg" width="400" /> 
+  <img src="doc/img/open/wechat.jpg" width="400" />
+  <img src="doc/img/open/wechat_group.jpg" width="400" /> 
 </p>
 
 ## Star History
