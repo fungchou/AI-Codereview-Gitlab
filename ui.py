@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import math
+from pathlib import Path
 
 import streamlit as st
 
@@ -8,7 +9,6 @@ st.set_page_config(layout="wide", page_title="AI代码审查平台", page_icon="
 
 import datetime
 import os
-import json
 import hashlib
 import hmac
 import base64
@@ -16,11 +16,34 @@ import time
 import pandas as pd
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+import matplotlib.font_manager as fm
+import streamlit as st
+
 from biz.service.review_service import ReviewService
 from matplotlib.ticker import MaxNLocator
 from streamlit_cookies_manager import CookieManager
 
 load_dotenv("conf/.env")
+
+
+def set_global_font():
+    """设置全局字体，如果字体文件不存在则忽略并使用默认字体"""
+    font_path = "fonts/SourceHanSansCN-Regular.otf"
+    if Path(font_path).exists():
+        try:
+            fm.fontManager.addfont(font_path)
+            mpl.rcParams["font.family"] = "Source Han Sans CN"
+        except Exception as e:
+            st.warning(f"字体加载失败，使用默认字体。错误信息：{e}")
+    else:
+        st.warning(f"字体文件未找到：{font_path}，将使用默认字体。")
+
+    mpl.rcParams["axes.unicode_minus"] = False  # 解决负号显示问题
+
+
+# 在项目启动时调用
+set_global_font()
 
 # 从环境变量中读取用户名和密码
 DASHBOARD_USER = os.getenv("DASHBOARD_USER", "admin")
@@ -230,6 +253,40 @@ st.markdown(
         margin-bottom: 0.5rem;
         text-align: center;
     }
+    /* Pro 版链接 - 与退出登录按钮同高同风格 */
+    a.pro-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem 2rem;
+        background: linear-gradient(135deg, #5b6bc0 0%, #7c4dff 100%);
+        color: #fff !important;
+        text-decoration: none;
+        border-radius: 20px;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        box-sizing: border-box;
+        min-height: 2.25rem;
+        line-height: 1.5;
+        white-space: nowrap;
+    }
+    a.pro-link:hover {
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        color: #fff !important;
+    }
+    .pro-link-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-left: 0.5rem;
+        min-width: 0;
+        overflow: hidden;
+    }
+    .pro-link-wrap .pro-link {
+        max-width: 100%;
+    }
     </style>
     """,
     unsafe_allow_html=True
@@ -423,15 +480,29 @@ def logout():
     st.rerun()
 
 
+# Pro 版文档链接（登录后展示）
+PRO_VERSION_URL = "https://github.com/sunmh207/AI-Codereview-Gitlab/blob/main/doc/pro.md"
+
+
 # 主要内容
 def main_page():
-    st.markdown("#### 📊 代码审查统计")
-
-    # 在标题后面添加退出按钮，使用更合适的列宽比例
-    col_title, col_space, col_logout = st.columns([7, 2, 1.2])
-    with col_logout:
-        if st.button("退出登录", key="logout_button", use_container_width=True):
-            logout()
+    # 顶部导航：标题、留白、退出登录与 Pro 版（两按钮不重叠，留出间距）
+    col_title, col_space, col_actions = st.columns([5, 1.5, 3.5])
+    with col_title:
+        st.markdown("#### 📊 代码审查统计")
+    with col_actions:
+        # 两列分别放退出登录、Pro 版，比例略偏右列以容纳较长文案
+        sub_col_logout, sub_col_pro = st.columns([1, 1.15])
+        with sub_col_logout:
+            if st.button("退出登录", key="logout_button", use_container_width=True):
+                logout()
+        with sub_col_pro:
+            st.markdown(
+                '<div class="pro-link-wrap">'
+                '<a href="' + PRO_VERSION_URL + '" target="_blank" rel="noopener noreferrer" class="pro-link">开源版 VS Pro 版</a>'
+                '</div>',
+                unsafe_allow_html=True
+            )
 
     current_date = datetime.date.today()
     start_date_default = current_date - datetime.timedelta(days=7)
